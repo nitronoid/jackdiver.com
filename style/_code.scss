@@ -1,0 +1,105 @@
+@use 'tokens' as *;
+
+code {
+  font-family: $mono;
+
+  font-size-adjust: ex-height #{$x-height};
+
+  padding: 0.06em 0.2em;
+  border-radius: 3px;
+  background: wash(6%);
+
+  white-space: nowrap;
+}
+
+aside code,
+figcaption code,
+.callout code,
+.site-footer code,
+.series-nav code {
+  font-size-adjust: ex-height #{$x-height-sans};
+}
+
+a code {
+  color: inherit;
+  background: wash(9%);
+}
+
+pre {
+  margin-block-end: r(1);
+  padding: r(0.5) r(0.75);
+
+  background: $c-surface;
+  border: 1px solid $c-rule;
+  border-radius: 4px;
+
+  font-family: $mono;
+  font-size: var(--type-code);
+  line-height: r(0.75);
+  font-variant-ligatures: none;
+  font-variant-numeric: normal;
+  tab-size: 2;
+
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: $c-rule-strong transparent;
+
+  code {
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    font-size: inherit;
+    font-size-adjust: none;
+    white-space: inherit;
+  }
+}
+
+// On wide screens a listing takes the room of the notes margin: as wide as its longest line,
+// no narrower than the column and no wider than column, rail and note. Past that it scrolls.
+// Only where notes are anchored: a float's margin box is negative, and a scroller beside
+// one may be pushed down, so the fallback keeps the column.
+@include wide {
+  @supports (anchor-name: --note) {
+    article > pre {
+      inline-size: max-content;
+      min-inline-size: var(--measure);
+      max-inline-size: calc(var(--measure) + var(--rail) + var(--note));
+    }
+  }
+}
+
+.highlight {
+  color: $c-text;
+
+  .hljs-keyword {
+    color: duo(mauve);
+  }
+
+  .hljs-type,
+  .hljs-title.class_ {
+    color: duo(yellow);
+  }
+
+  .hljs-built_in {
+    color: duo(blue);
+  }
+
+  .hljs-title {
+    color: duo(teal);
+  }
+
+  .hljs-string {
+    color: duo(green);
+  }
+
+  .hljs-number,
+  .hljs-literal {
+    color: duo(peach);
+  }
+
+  .hljs-comment {
+    color: duo(subtext1, subtext0);
+    font-style: italic;
+  }
+}

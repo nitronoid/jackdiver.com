@@ -1,0 +1,59 @@
+@forward 'scale';
+@forward 'palette';
+
+@use 'scale' as *;
+@use 'palette' as *;
+
+@property --measure {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 640px;
+}
+
+:root {
+  color-scheme: light dark;
+
+  --rhythm: #{$rhythm};
+  --rail: #{$rail};
+  --note: #{$note};
+  --pad: #{$pad};
+
+  --type-body: #{$type-body};
+  --type-h1: #{$type-h1};
+  --type-h2: #{$type-h2};
+  --type-h3: #{$type-h3};
+  --type-note: #{$type-note};
+  --type-micro: #{$type-micro};
+  --type-code: #{$type-code};
+
+  --ease: 130ms cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+@mixin container {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: var(--page);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+@mixin chrome($size: var(--type-micro), $leading: 0.75) {
+  font-family: $sans;
+  font-size: $size;
+  line-height: r($leading);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+
+  font-variant-numeric: tabular-nums;
+}
+
+@mixin quiet-underline($colour: currentColor) {
+  text-decoration: none;
+  border-block-end: 1px solid transparent;
+  transition: color var(--ease), border-color var(--ease);
+
+  &:hover,
+  &:focus-visible {
+    border-block-end-color: $colour;
+  }
+}

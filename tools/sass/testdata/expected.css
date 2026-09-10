@@ -1,0 +1,10 @@
+.note {
+  border: 1px solid #336699;
+  padding: 2px;
+}
+.note:hover {
+  color: #336699;
+}
+.note p {
+  margin: 4px;
+}

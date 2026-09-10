@@ -1,0 +1,14 @@
+<p>An SVG figure with a width:</p>
+<div class="ink-mask" role="img" aria-label="The diagram" style="--src: url('/image/diagram.svg'); --ratio: 300/200; --width: 75%"></div>
+<p>The same file again, without one:</p>
+<div class="ink-mask" role="img" aria-label="The diagram, full width" style="--src: url('/image/diagram.svg'); --ratio: 300/200"></div>
+<p>A figure with no alt text:</p>
+<div class="ink-mask" aria-hidden="true" style="--src: url('/image/diagram.svg'); --ratio: 300/200; --width: 50%"></div>
+<p>A figure from a definition:</p>
+<div class="ink-mask" role="img" aria-label="The defined diagram" style="--src: url('/image/diagram.svg'); --ratio: 300/200; --width: 40%"></div>
+<p>A figure in a quote:</p>
+<blockquote>
+<div class="ink-mask" role="img" aria-label="Quoted" style="--src: url('/image/diagram.svg'); --ratio: 300/200; --width: 100%"></div>
+</blockquote>
+<p>A PNG is not drawn as a mask, and so is an SVG with text beside it: <img src="/image/diagram.svg" alt="An inline diagram"> is part of this line.</p>
+<p><img src="/image/picture.png" alt="A picture" style="width: 60%"></p>

@@ -1,0 +1,1 @@
+globalThis.first = 1;

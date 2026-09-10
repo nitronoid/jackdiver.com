@@ -1,0 +1,29 @@
+build --symlink_prefix=out/
+build --incompatible_strict_action_env
+
+# Start py_binary launchers (rules_multirun's, for one) with rules_python's hermetic
+# interpreter, not the host's python3. Stop that interpreter writing .pyc files into its
+# own external repository, which makes Bazel warn and re-fetch the repository.
+common --@rules_python//python/config_settings:bootstrap_impl=script
+run --run_env=PYTHONDONTWRITEBYTECODE=1
+
+build --cxxopt='-std=c++23'
+build --host_cxxopt='-std=c++23'
+build --cxxopt='-Wall'
+build --cxxopt='-Wextra'
+build --cxxopt='-Werror'
+build --cxxopt='-pedantic'
+build --cxxopt='-fdiagnostics-color=always'
+build --cxxopt='-Wno-unused-template'
+build --per_file_copt=external/.*,deps/thirdparty/.*@-w
+build --host_per_file_copt=external/.*,deps/thirdparty/.*@-w
+
+build:lint --aspects=//tools/lint:linters.bzl%clang_tidy
+build:lint --output_groups=rules_lint_human
+
+build:asan --@llvm//config:asan
+build:asan --@llvm//config:ubsan
+build:asan --copt='-fno-sanitize-recover=undefined'
+# UBSan's function check with ASan makes ld64.lld misplace unwind info, so no exception
+# can be caught.
+build:asan --copt='-fno-sanitize=function'

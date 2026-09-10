@@ -1,0 +1,26 @@
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "hljs_bytecode",
+    actual = "//deps/thirdparty/highlightjs:hljs_bytecode",
+)
+
+alias(
+    name = "pegtl",
+    actual = "//deps/thirdparty/pegtl",
+)
+
+alias(
+    name = "qjsc",
+    actual = "//deps/thirdparty/quickjs:qjsc",
+)
+
+alias(
+    name = "quickjs",
+    actual = "//deps/thirdparty/quickjs",
+)
+
+alias(
+    name = "temml_bytecode",
+    actual = "//deps/thirdparty/temml:temml_bytecode",
+)

@@ -1,0 +1,29 @@
+[%title]: Figures
+
+An SVG figure with a width:
+
+[!The diagram](/image/diagram.svg 75%)
+
+The same file again, without one:
+
+[!The diagram, full width](/image/diagram.svg)
+
+A figure with no alt text:
+
+[!](/image/diagram.svg 50%)
+
+A figure from a definition:
+
+[!The defined diagram]
+
+[!The defined diagram]: /image/diagram.svg 40%
+
+A figure in a quote:
+
+>
+[!Quoted](/image/diagram.svg 100%)
+<
+
+A PNG is not drawn as a mask, and so is an SVG with text beside it: [!An inline diagram](/image/diagram.svg) is part of this line.
+
+[!A picture](/image/picture.png 60%)

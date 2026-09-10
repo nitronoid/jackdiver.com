@@ -1,0 +1,13 @@
+package(default_visibility = ["//tests/www:__pkg__"])
+
+filegroup(
+    name = "content",
+    srcs = glob(
+        [
+            "posts/*.jimd",
+            "pages/*.jimd",
+            "static/**",
+        ],
+        allow_empty = True,
+    ),
+)

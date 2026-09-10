@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>First part: what’s a “system”? – Jack Diver</title>
+  <meta name="description" content="The first of two parts, with a note and some maths.">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.style.colorScheme = t;
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/style/main.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+        href="/font/source-serif-4-roman.woff2">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/theme.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <a class="site-title" href="/">Jack Diver</a>
+  <nav class="site-nav">
+    <a href="/archive/">archive</a>
+    <a href="/about/">About</a>
+    <button type="button" class="theme-toggle" data-theme-toggle hidden>
+      <span class="theme-toggle-label" aria-hidden="true"></span>
+    </button>
+  </nav>
+</header>
+<main>
+  <article class="post">
+    <h1>First part: what’s a “system”?</h1>
+    <nav class="post-meta">
+      <span class="date">3 September 2026</span>
+    </nav>
+    <nav class="series-nav" aria-label="Series navigation">
+      <p class="series-label">Part 1 of 2 in a series</p>
+      <ol class="series-parts">
+        <li class="current" aria-current="true">First part: what’s a “system”?</li>
+        <li><a href="/2026/09/04/second-part/">Second part</a></li>
+      </ol>
+    </nav>
+<h2 id="the-idea"><a href="#the-idea">The idea</a></h2>
+<p>A system maps an input <math><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math> to an output <math><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>, and it is linear if <math><semantics><mrow><mi>y</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>a</mi><mi>u</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>=</mo><mi>a</mi><mspace width="0.1667em"></mspace><mi>y</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>u</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">y(au) = a\,y(u)</annotation></semantics></math>.<sup class="note-ref" style="anchor-name: --note-1"><a href="#note-1" id="noteref-1">1</a></sup></p>
+<aside id="note-1" data-note="1" style="position-anchor: --note-1">
+<p>Scaling the input scales the output, which is the first of two rules.</p>
+</aside>
+<p>Two rules:</p>
+<ul>
+<li>Scaling</li>
+<li>Additivity</li>
+</ul>
+    <nav class="series-footer" aria-label="Series parts">
+      <a class="next" href="/2026/09/04/second-part/">
+        <span class="direction">Next part →</span>
+        <span class="title">Second part</span>
+      </a>
+    </nav>
+    <nav class="post-nav" aria-label="Adjacent posts">
+      <a class="older" href="/2025/12/31/year-end/">
+        <span class="direction">← Older</span>
+        <span class="title">Year end</span>
+      </a>
+      <a class="newer" href="/2026/09/04/second-part/">
+        <span class="direction">Newer →</span>
+        <span class="title">Second part</span>
+      </a>
+    </nav>
+  </article>
+</main>
+</body>
+</html>

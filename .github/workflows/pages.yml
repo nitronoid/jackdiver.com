@@ -1,0 +1,45 @@
+# Builds the site with `bazel build //:www` and publishes it to GitHub Pages. The repository's
+# Pages source must be "GitHub Actions"; the custom domain is set there too, so no CNAME file.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: bazel-contrib/setup-bazel@0.15.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+      - run: bazel test //...
+      - run: bazel build //:www
+      # out/bin is a symlink into Bazel's output base, and the files in it are read-only.
+      - run: cp -RL out/bin/www _site && chmod -R u+w _site
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

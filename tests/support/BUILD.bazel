@@ -1,0 +1,50 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
+cc_library(
+    name = "dump",
+    testonly = True,
+    srcs = ["dump.cxx"],
+    hdrs = ["dump.hxx"],
+    strip_include_prefix = "/tests",
+    deps = ["//:jimd"],
+)
+
+cc_test(
+    name = "dump_test",
+    size = "small",
+    srcs = ["dump_test.cxx"],
+    deps = [
+        ":ast_printers",
+        ":dump",
+        "//:jimd",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "ast_printers",
+    testonly = True,
+    srcs = ["ast_printers.cxx"],
+    hdrs = ["ast_printers.hxx"],
+    strip_include_prefix = "/tests",
+    visibility = ["//tests:__subpackages__"],
+    deps = [
+        ":dump",
+        "//:jimd",
+    ],
+)
+
+cc_library(
+    name = "result_printers",
+    testonly = True,
+    srcs = ["result_printers.cxx"],
+    hdrs = ["result_printers.hxx"],
+    strip_include_prefix = "/tests",
+    visibility = ["//tests:__subpackages__"],
+    deps = [
+        "//:blog_lib",
+        "//:jimd",
+        "@googletest//:gtest",
+    ],
+)

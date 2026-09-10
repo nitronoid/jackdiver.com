@@ -1,0 +1,23 @@
+# Typography: "quotes", 'quotes' and don't
+
+"Double quotes" and 'single quotes' open after a blank and close after a word, so don't, (a "bracketed" quote) and a quote after a dash--"like this".
+A quote starts a line, so "this one opens" after the soft break.
+
+Dots and dashes: wait... a pause, an em dash--here, then ---, then ...., and a lone - or .. as they are.
+
+_"Emphasis is transparent"_, and *'strong' too*; after a word_"even here"_ a quote closes, as it does in "_this_".
+
+Code is left alone: `'code' "span" -- ...`, and so is the target and the alt: [@a "link" that's text](https://example.com/it's "x") and [!"pic" it's](pic.png).
+
+Code spans, images and notes count as letters: `c`"closes", [!pic](pic.png)"closes", and a note[^n]"closes".
+
+An escape keeps its characters apart: -\- and \-- and \-"opens".
+
+- 'A list item' starts afresh
+- and so does "this one"
+
+>
+"A quote" starts afresh, too.
+<
+
+[^n]: 'A note' starts afresh, and so does "this" one.

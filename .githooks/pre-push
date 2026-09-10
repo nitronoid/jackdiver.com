@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+STAGED_PATCH="$(mktemp)"
+UNSTAGED_PATCH="$(mktemp)"
+HAS_UNCOMMITTED=0
+
+cleanup() {
+    if [[ $HAS_UNCOMMITTED -eq 1 ]]; then
+        git reset --hard HEAD >/dev/null 2>&1 || true
+        if [[ -s "$STAGED_PATCH" ]]; then
+            git apply --binary --index "$STAGED_PATCH" 2>/dev/null || {
+                echo "WARNING: Failed to re-apply staged changes." >&2
+                echo "Your staged changes are preserved in: $STAGED_PATCH" >&2
+            }
+        fi
+        if [[ -s "$UNSTAGED_PATCH" ]]; then
+            git apply --binary "$UNSTAGED_PATCH" 2>/dev/null || {
+                echo "WARNING: Failed to re-apply unstaged changes." >&2
+                echo "Your unstaged changes are preserved in: $UNSTAGED_PATCH" >&2
+            }
+        fi
+    fi
+    rm -f "$STAGED_PATCH" "$UNSTAGED_PATCH"
+}
+trap cleanup EXIT INT TERM
+
+if ! git diff HEAD --quiet --ignore-submodules --; then
+    HAS_UNCOMMITTED=1
+    git diff --cached --binary > "$STAGED_PATCH"
+    git diff --binary > "$UNSTAGED_PATCH"
+    git reset --hard HEAD >/dev/null 2>&1
+fi
+
+echo "==> Running tests..."
+if ! bazel test //...; then
+    echo "ERROR: Tests failed. Push aborted." >&2
+    exit 1
+fi

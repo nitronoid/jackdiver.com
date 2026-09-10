@@ -1,0 +1,61 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+
+cc_library(
+    name = "golden",
+    testonly = True,
+    srcs = ["golden.cxx"],
+    hdrs = ["golden.hxx"],
+    strip_include_prefix = "/tests",
+    visibility = ["//tests/blog:__pkg__"],
+    deps = [
+        "//:blog_lib",
+        "//:highlight",
+        "//:jimd",
+        "//:math",
+    ],
+)
+
+cc_test(
+    name = "golden_test",
+    size = "small",
+    srcs = ["golden_test.cxx"],
+    data = glob(
+        [
+            "*.jimd",
+            "*.html",
+            "image/*.svg",
+        ],
+        allow_empty = True,
+    ),
+    deps = [
+        ":golden",
+        "//:highlight",
+        "//:math",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "golden_lib_test",
+    size = "small",
+    srcs = ["golden_lib_test.cxx"],
+    deps = [
+        ":golden",
+        "//:highlight",
+        "//:math",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_binary(
+    name = "update",
+    testonly = True,
+    srcs = ["update.cxx"],
+    deps = [
+        ":golden",
+        "//:highlight",
+        "//:math",
+    ],
+)

@@ -1,0 +1,10 @@
+[%title]: About
+
+Hi I'm Jack, welcome to my blog! I'm a Software Engineer working on GPU Drivers at Apple.
+
+My main areas of interest are:
+- Graphics programming
+- Language design
+- Control systems
+
+The small static site is built by jimd, my custom Markdown dialect (maybe I'll make a post about that someday).

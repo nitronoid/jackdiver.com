@@ -1,0 +1,176 @@
+@use 'tokens' as *;
+
+blockquote {
+  margin-block-end: r(1);
+  padding-inline-start: r(0.75);
+  border-inline-start: 2px solid color-mix(in oklab, #{$c-link} 55%, transparent);
+  color: $c-text-dim;
+
+  > :last-child {
+    margin-block-end: 0;
+  }
+
+  cite {
+    display: block;
+    @include chrome(var(--type-note));
+    font-style: normal;
+    color: $c-text-faint;
+    margin-block-start: r(0.25);
+
+    &::before {
+      content: '— ';
+    }
+  }
+}
+
+svg.ink {
+  color: $c-text;
+
+  background: none;
+
+  [stroke='#000'],
+  [stroke='#000000'],
+  [stroke='black'] {
+    stroke: currentColor;
+  }
+
+  [fill='#000'],
+  [fill='#000000'],
+  [fill='black'] {
+    fill: currentColor;
+  }
+
+  text {
+    fill: currentColor;
+  }
+}
+
+.ink-mask {
+  display: block;
+  inline-size: min(100%, var(--width, 100%));
+  margin-inline: auto;
+  aspect-ratio: var(--ratio);
+  background-color: $c-text;
+
+  mask-image: var(--src);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+img,
+svg,
+canvas,
+video {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+figure {
+  margin-block-end: r(1);
+
+  img,
+  svg,
+  canvas,
+  video {
+    inline-size: 100%;
+    border-radius: 3px;
+    background: $c-surface;
+  }
+}
+
+figcaption {
+  @include chrome(var(--type-note));
+  font-weight: 400;
+  color: $c-text-dim;
+  margin-block-start: r(0.25);
+  text-wrap: pretty;
+
+  strong {
+    font-weight: 600;
+    color: $c-text;
+  }
+}
+
+.wide {
+  margin-inline: calc(var(--pad) * -1);
+}
+
+@include wide {
+  article > .wide {
+    grid-column: 1 / -1;
+    margin-inline: 0;
+  }
+}
+
+.callout {
+  margin-block-end: r(1);
+  padding: r(0.75) r(0.75) r(0.5);
+
+  background: $c-surface;
+  border: 1px solid $c-rule;
+  border-radius: 4px;
+
+  font-size: var(--type-note);
+  line-height: r(0.75);
+
+  > :last-child {
+    margin-block-end: 0;
+  }
+
+  p,
+  ul,
+  ol {
+    margin-block-end: r(0.5);
+  }
+
+  > p:first-child > strong:only-child {
+    display: block;
+    @include chrome(var(--type-micro));
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: $c-link;
+    margin-block-end: r(0.25);
+  }
+}
+
+article table:not(.archive) {
+  inline-size: 100%;
+  border-collapse: collapse;
+  margin-block-end: r(1);
+  font-variant-numeric: tabular-nums;
+
+  th,
+  td {
+    padding: r(0.25) 0.75em r(0.25) 0;
+    text-align: start;
+    vertical-align: baseline;
+    line-height: r(0.75);
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-inline-end: 0;
+  }
+
+  thead th {
+    @include chrome(var(--type-micro), 0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $c-text-dim;
+    border-block-end: 1px solid $c-rule-strong;
+  }
+
+  tbody tr + tr {
+    border-block-start: 1px solid $c-rule;
+  }
+
+  caption {
+    @include chrome(var(--type-note));
+    font-weight: 400;
+    color: $c-text-dim;
+    text-align: start;
+    margin-block-end: r(0.25);
+  }
+}

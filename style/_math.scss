@@ -1,0 +1,58 @@
+@use 'tokens' as *;
+
+math {
+  font-family: $math;
+
+  color: inherit;
+
+  font-size-adjust: ex-height #{$x-height};
+
+  font-size: 1.02em;
+}
+
+math:not([display='block']) {
+  math-style: compact;
+}
+
+math[display='block'] {
+  display: block;
+  math-style: normal;
+
+  inline-size: fit-content;
+  max-inline-size: 100%;
+
+  margin: 0 auto r(1);
+
+  font-size: 1.08em;
+
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: $c-rule-strong transparent;
+
+  padding-block: 2px;
+}
+
+math semantics > :not(:first-child),
+math annotation,
+math annotation-xml {
+  display: none;
+}
+
+.math-error {
+  font-family: $mono;
+  font-size-adjust: ex-height #{$x-height};
+  font-style: normal;
+
+  padding: 0.1em 0.4em;
+  border: 1px dashed light-dark(oklch(52% 0.2 25), oklch(78% 0.128 25));
+  border-radius: 3px;
+
+  color: light-dark(oklch(52% 0.2 25), oklch(78% 0.128 25));
+  background: color-mix(in oklab, light-dark(oklch(52% 0.2 25), oklch(78% 0.128 25)) 10%, transparent);
+
+  &::before {
+    content: '⚠ ';
+    font-family: $sans;
+  }
+}

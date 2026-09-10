@@ -1,0 +1,35 @@
+# A header
+
+Regular text, with `inline code`.
+
+Then block:
+```
+some code
+```
+
+A paragraph that shouldn't
+be split
+
+>
+A quote
+>
+And another!
+<
+<
+
+Regular text again[^ref], a [@hyperlink](some/url).
+
+[!image](path/to/image)
+
+Testing *out* _different_ *_emphasis_* _*types*_.
+
+```
+def now_a_function():
+    pass
+```
+
+# Conclusion
+
+Great success?
+
+[^ref]: A footnote reference

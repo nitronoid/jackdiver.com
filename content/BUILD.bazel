@@ -1,0 +1,35 @@
+package(default_visibility = ["//:__subpackages__"])
+
+filegroup(
+    name = "posts",
+    srcs = glob(
+        ["posts/*.jimd"],
+        allow_empty = True,
+    ),
+)
+
+filegroup(
+    name = "pages",
+    srcs = glob(
+        ["pages/*.jimd"],
+        allow_empty = True,
+    ),
+)
+
+filegroup(
+    name = "static",
+    srcs = glob(
+        ["static/**"],
+        allow_empty = True,
+        exclude = ["**/.DS_Store"],
+    ),
+)
+
+filegroup(
+    name = "content",
+    srcs = [
+        ":pages",
+        ":posts",
+        ":static",
+    ],
+)

@@ -1,0 +1,72 @@
+@use 'sass:math';
+
+$breakpoint-wide: 1088px;
+
+$breakpoint-narrow: 40rem;
+
+@mixin wide {
+  @media screen and (width >= #{$breakpoint-wide}) {
+    @content;
+  }
+}
+
+@mixin narrow {
+  @media (width < #{$breakpoint-narrow}) {
+    @content;
+  }
+}
+
+@mixin not-wide {
+  @media screen and (width < #{$breakpoint-wide}) {
+    @content;
+  }
+}
+
+$vw-min: 22.5rem;
+$vw-max: 80rem;
+
+@function _round($n, $places: 4) {
+  $factor: math.pow(10, $places);
+  @return math.div(math.round($n * $factor), $factor);
+}
+
+@function fluid($min, $max) {
+  @if $min == $max {
+    @return $min;
+  }
+
+  $slope: math.div($max - $min, $vw-max - $vw-min);
+  $intercept: _round($min - $slope * $vw-min);
+  @return clamp(#{$min}, #{$intercept} + #{_round($slope * 100vw)}, #{$max});
+}
+
+$rhythm: fluid(1.6875rem, 1.875rem);
+
+@function r($n) {
+  @if $n == 1 {
+    @return var(--rhythm);
+  }
+  @return calc(var(--rhythm) * #{$n});
+}
+
+$type-body: fluid(1.0625rem, 1.1875rem);
+$type-h1: fluid(1.75rem, 2.375rem);
+$type-h2: fluid(1.375rem, 1.625rem);
+$type-h3: fluid(1.1875rem, 1.3125rem);
+$type-note: fluid(0.875rem, 0.9375rem);
+$type-micro: fluid(0.8125rem, 0.875rem);
+$type-code: fluid(0.84375rem, 0.9375rem);
+
+$measure: min(66ch, 40rem);
+$rail: 3rem;
+$note: 15rem;
+$pad: fluid(1.25rem, 2rem);
+
+$serif: 'Source Serif 4', 'Iowan Old Style', Palatino, Georgia, serif;
+$sans: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+$mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+$math: 'STIX Two Math', 'Cambria Math', math;
+
+$x-height: 0.475;
+
+$x-height-sans: 0.5;

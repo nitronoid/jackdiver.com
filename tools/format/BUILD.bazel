@@ -1,0 +1,28 @@
+load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
+load("@buildifier_prebuilt//:rules.bzl", "buildifier")
+
+package(default_visibility = ["//:__subpackages__"])
+
+format_multirun(
+    name = "clang-format",
+    cc = "@llvm//tools:clang-format",
+    tags = ["manual"],
+    visibility = ["//visibility:public"],
+)
+
+buildifier(
+    name = "buildifier",
+    exclude_patterns = [
+        "./.git/*",
+    ],
+    mode = "fix",
+)
+
+buildifier(
+    name = "buildifier.check",
+    exclude_patterns = [
+        "./.git/*",
+    ],
+    lint_mode = "warn",
+    mode = "diff",
+)

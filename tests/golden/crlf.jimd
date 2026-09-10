@@ -1,0 +1,16 @@
+[%title]: CRLF page
+
+# A heading
+
+A paragraph
+with two lines and a [@link].
+
+>
+A quote
+<
+
+[@link]: https://example.com/
+
+A note[^n].
+
+[^n]: The *note*.

@@ -1,0 +1,137 @@
+[%title]: PI Control
+[%series]: pi
+
+Last time we learned how to solve _linear systems_, and by the end we had an elegant equation to represent the required flame strength to heat our boiler to some target temperature:
+
+$$
+f(t) = f_{steady} + f_{steady} \cdot \left(\frac{\tau}{\tau_{fast}} - 1\right) \cdot e^{-t/\tau_{fast}}
+$$
+
+This is called an _open-loop_ solution: the flame is purely a function of elapsed time, and never once looks at how the boiler actually responded. That's its major drawback, because it only works in a very static, controlled environment. What if the ambient temperature changes? Or the target temperature changes?
+In reality, lots of these variables can change while the system is running.
+
+We could change our mind about the water temperature, it could be a colder day than usual, or maybe fresh cold water just flowed into the boiler.
+In this post we'll take our open-loop solution for the flame, and turn it into something that's dynamic, and robust to all of these variables.
+
+## Proportional control
+
+[!centrifugal governor](/image/centrifugal_governor.svg 75%)
+
+One of the earliest known applications of proportional control was in "Centrifugal Governors", which had been regulating the grindstones inside windmills since at least the 18th century[^mead]. Geared to the shaft that drove the stones was a pair of heavy flyweights, and as the strength of the wind caused that shaft to spin ever faster, centrifugal force would push the flyweights outwards. The windmill's grindstone would be connected to the flyweights via a lever, and as the flyweights were pushed outwards the lever would respond by raising the grindstone. This invention allowed the gap between stones to increase _proportional_ to the speed of the wind, helping to prevent wear and grain fires.
+
+The invention was later adopted for the regulation of steam throttle valves in engines during the industrial revolution.
+
+[^mead]: Often dated to the 17th century, though the earliest documented design is Thomas Mead's patent of 1787.
+
+## _A wild integral appeared!_
+
+While proportional control seemed to work well for the windmill, where we have a straightforward mapping from wind speed to grindstone gap, there's a flaw when you ask this mechanism to hold something _steady_.
+The governor on a steam engine is in charge of keeping the engine at a set speed. It does that by connecting the throttle to flyweights: a drop in speed opens the throttle, and an increase closes it. Unfortunately, the flyweights' action on the throttle, and the speed of the engine controlled by that same throttle, are in a feedback loop which inherently balances out somewhere that _isn't the target speed_. To maintain the current engine speed, some throttle is required, but to have the throttle open we need the flyweights to drop, which needs us to _not_ be at the target speed. So, the engine gets stuck in an equilibrium and the distance from that equilibrium to our target is called _steady-state error_.
+
+The issue of proportional control was revived during the early 20th century when ship steering was solved mathematically. The goal was to keep the ship on course by correcting for outside disturbances, and the solution was conceived initially during observations of ship helmsmen who had learned that they must steer the ship not only based on how off course the ship was _right now_, but also based on how off course the ship was _recently_, allowing the helmsman to account for a steady wind pushing the ship off course.
+The mathematicians observing the helmsman introduced the concept of _integral action_, which targets exactly that steady gap, by introducing additional corrective action that is proportional to a history of measurements.
+
+A Proportional-Integral Controller (PI controller for short) combines those two actions, and crucially it uses _error_ as its sole input. What we're going to do in this post is model a closed-loop solution, via a PI controller, on our open-loop formula. By the end our flame equation will arrive at:
+$$
+f(t) = K_c\left(e(t) + \frac{1}{\tau_I}\int_0^t e(t')\,dt'\right)
+$$
+The equation has a few new concepts:
+- $e(t)$ is the instantaneous _error_.
+- $K_c$ is the proportional gain - how hard do we want to push for a given amount of error?
+- $\tau_I$ is the _integral_ time constant - often called the integral reset time[^reset]. It represents how _patient_ we want the integral term to be. The integral action exists to address steady-state error, but a linear system takes time to present that error.
+
+[^reset]: Hold the error constant and after $\tau_I$ seconds the integral's contribution equals the proportional term's. That's where "reset time" comes from, although I think it would be better named "catch up time".
+
+### "What's error?"
+
+In our case error is the current gap to the target temperature: $e(t) = T_{target} - T(t)$.
+Notice that using error is a very neat mechanism to incorporate the potential effects of changing the input variables:
+- Changed $T_{target}$? Error changes.
+- $T_{ambient}$ changed? The boiler now bleeds heat at a _different rate_, so it settles somewhere different with an error that doesn't close.
+
+
+### "Cool! So... _how do we use it_?"
+
+Let's think about the $e^{-t/\tau_{fast}}$ part of our flame equation, the time-varying term that diminishes with an _exponential decay_. Okay, well what actually happens to the error as we step through time? Hmm, it _also_ diminishes with an _exponential decay_... I wonder if we can use error to replace our exponential term?
+
+In doing so we would create a feedback loop which determines the current flame in terms of the current error... that does _sound_ quite robust to changes in our variables.
+```
+   T_target
+       │ +
+       ▼
+     ┌───┐ e(t) ┌────────────┐ f(t) ┌──────────┐
+     │ Σ │─────▶│ controller │─────▶│  boiler  │
+     └───┘      └────────────┘      └──────────┘
+       ▲ −                                │
+       └────────────── T(t) ──────────────┘
+```
+
+## Proportional Boost
+
+We'll start with the boost part first since it's a bit easier. Let's try to replace the exponential term with error...
+
+We can split out the boost term from our main equation as:
+$$
+f_{boost}(t) = f_{steady} \cdot \left(\frac{\tau}{\tau_{fast}} - 1\right) \cdot e^{-t/\tau_{fast}}
+$$
+We'll assume a cold start ($T_{ambient} = 0$) because this makes the derivation simpler[^promise]. Our identities then simplify to just:
+$$
+K \cdot f_{steady} = T_{target}, \quad T(t) = T_{target} \cdot \big(1 - e^{-t/\tau_{fast}}\big)
+$$
+Substituting $T(t)$ into the error formula lets us rephrase $f_{boost}$:
+$$$
+e(t) &= K \cdot f_{steady} \cdot e^{-t/\tau_{fast}}
+f_{boost}(t) &= \frac{e(t)}{K} \cdot \left(\frac{\tau}{\tau_{fast}} - 1\right)
+$$$
+
+[^promise]: If we _didn't_ do this, we'd still get the same result. *Exercise*: Try the derivation yourself with $T_{ambient} \neq 0$.
+
+Great! No sign of that pesky exponential term, the boost component of our flame can be defined entirely as a function of error and a bunch of constants[^woo] (wonder if those could be used to define $K_c$?...)
+
+[^woo]: Woohoo!
+
+
+## _"Keep ’er steady!"_
+
+The steady part is more difficult because $f_{steady}$ depends on things that are no longer fixed, like $T_{ambient}$. We know that the PI control solution to this conundrum is to _accumulate_ it instead, so let's see what happens if we add up all the error we've seen so far:
+
+$$$
+\int_{0}^{t} e(t') \,dt' &= \int_{0}^{t} \big(T_{target} - T(t')\big) \,dt'
+&= \int_{0}^{t} T_{target} \cdot e^{-t'/\tau_{fast}} \,dt'
+&= \tau_{fast} \cdot T_{target} \cdot \big(1 - e^{-t/\tau_{fast}}\big)
+T(t) &= \frac{1}{\tau_{fast}} \cdot \int_{0}^{t} e(t') \,dt'
+$$$
+
+That's... a lot of maths, but it turns out this is a "great success". In words, this shows that the error we've piled up, scaled by the inverse of $\tau_{fast}$, _is the temperature we've gained_. That's quite a lovely equivalence, and it makes sense: At the start ($t = 0$), error will exactly equal the gap to $T_{target}$, but as we advance and $T(t)$ increases, error _must shrink_ to mirror its rise - they're two views of the same thing!
+
+We already know that $f_{steady} = \frac{T_{target}}{K}$ and that $e(t) = T_{target} - T(t)$, so we can get our final equation out:
+$$
+f_{steady} = \frac{1}{K \cdot \tau_{fast}} \cdot \int_{0}^{t} e(t') \,dt' + \frac{e(t)}{K}
+$$
+
+Again, let's think about what this produces as time varies. At the start ($t=0$), the integral part is doing nothing because we've not accumulated any error yet, $\frac{1}{K}e(t)$ is doing all the work.[^flashback]
+As time advances that term diminishes, but everything it _loses_ is _gained_ by the integral part which eats up our error over time.
+
+[^flashback]: And considering we started with $K \cdot f_{steady} = T_{target}$, and $e(0) = T_{target}$, this is exactly what we want.
+
+
+## Putting it all together
+
+Combining our two results back into one equation yields something distinctly similar to the PI equation from before[^before]:
+$$$
+f(t) &= \underbrace{\left(\frac{1}{K \cdot \tau_{fast}} \cdot \int_{0}^{t} e(t') \,dt' + \frac{e(t)}{K}\right)}_{f_{steady}} + \underbrace{\frac{e(t)}{K} \cdot \left(\frac{\tau}{\tau_{fast}} - 1\right)}_{f_{boost}}
+&= \frac{\tau}{K \cdot \tau_{fast}} \cdot \left(e(t) + \frac{1}{\tau} \cdot \int_{0}^{t} e(t') \,dt' \right)
+$$$
+$$
+\therefore K_c = \frac{\tau}{K \cdot \tau_{fast}}, \quad \tau_I = \tau
+$$
+
+[^before]: Here it is again so you don't have to scroll back up: $f(t) = K_c\big(e(t) + \frac{1}{\tau_I}\int_0^t e(t')\,dt'\big)$. You're welcome.
+
+Note the $\frac{e(t)}{K}$ cancellation happening here too: in the open-loop formula we added $f_{steady}$ on separately, so the boost term needed to subtract it to avoid counting it twice. In this new formulation, our proportional term _hands over_ the responsibility of $f_{steady}$ as time advances. The two equations are equivalent, but the new role assignment is elegant: The integral term holds the ground we've already covered, and the proportional term asks for the flame that closes the _remaining_ gap.
+
+Look at what the two constants turned out to be:
+- The gain still scales by the same ratio we started with: $K_c = \frac{\tau}{\tau_{fast}} \cdot \frac{1}{K}$. This maintains our _"want to go $X$ times as fast? Use $X$ times the flame"_ rule.
+- The integral reset time is just $\tau$, the boiler's own time constant, which is perfect. We learned that the integral term exists to close steady-state error, but the boiler itself takes time ($\tau$) to show us that error. If our integral term were to be too impatient, and act more quickly than the boiler can react, we'd introduce instability. Likewise if it was too patient, we'd be sacrificing speed and our controller would be sluggish.
+
+While this might at first glance look _more_ complicated than before, we've boiled down the flame function to exactly one dependency, _error_, everything else in the equation is constant.

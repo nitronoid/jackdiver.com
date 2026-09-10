@@ -1,0 +1,91 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("@rules_python//python:py_binary.bzl", "py_binary")
+load("//tools/www:defs.bzl", "blog_site")
+
+package(default_visibility = ["//:__subpackages__"])
+
+cc_library(
+    name = "jimd",
+    srcs = glob(["src/jimd/**/*.cxx"]),
+    hdrs = glob(["include/jimd/**/*.hxx"]),
+    includes = ["include"],
+    deps = [
+        "//deps/thirdparty/pegtl",
+    ],
+)
+
+cc_library(
+    name = "js",
+    srcs = glob(["src/js/**/*.cxx"]),
+    hdrs = glob(["src/js/**/*.hxx"]),
+    implementation_deps = [
+        "//deps/thirdparty:quickjs",
+    ],
+    strip_include_prefix = "src",
+)
+
+cc_library(
+    name = "highlight",
+    srcs = glob(["src/highlight/**/*.cxx"]),
+    hdrs = glob(["src/highlight/**/*.hxx"]),
+    implementation_deps = [
+        "//deps/thirdparty:hljs_bytecode",
+    ],
+    strip_include_prefix = "src",
+    deps = [":js"],
+)
+
+cc_library(
+    name = "math",
+    srcs = glob(["src/math/**/*.cxx"]),
+    hdrs = glob(["src/math/**/*.hxx"]),
+    implementation_deps = [
+        "//deps/thirdparty:temml_bytecode",
+    ],
+    strip_include_prefix = "src",
+    deps = [":js"],
+)
+
+cc_library(
+    name = "blog_lib",
+    srcs = glob(
+        ["src/blog/**/*.cxx"],
+        exclude = ["src/blog/main.cxx"],
+    ),
+    hdrs = glob(["src/blog/**/*.hxx"]),
+    strip_include_prefix = "src",
+    deps = [
+        ":highlight",
+        ":jimd",
+        ":math",
+    ],
+)
+
+cc_binary(
+    name = "blog",
+    srcs = ["src/blog/main.cxx"],
+    deps = [
+        ":blog_lib",
+        ":highlight",
+        ":math",
+    ],
+)
+
+blog_site(
+    name = "www",
+    content = "//content",
+    css = "//style:main_css",
+)
+
+py_binary(
+    name = "serve",
+    srcs = ["//tools/www:serve.py"],
+    args = ["$(rootpath :www)"],
+    data = [":www"],
+    main = "//tools/www:serve.py",
+)
+
+exports_files([
+    ".clang-format",
+    ".clang-tidy",
+])

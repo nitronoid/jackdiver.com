@@ -1,0 +1,22 @@
+---
+Checks: >
+  -*,
+  bugprone-*,
+  clang-analyzer-*,
+  concurrency-*,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-avoid-magic-numbers,
+  linuxkernel-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  -readability-trailing-comma
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*'
+ExcludeHeaderFilterRegex: '(^|/)(external|deps)/'
+FormatStyle: file
+CheckOptions:
+  readability-magic-numbers.IgnoredFloatingPointValues: '0.5;1.0;2.0;100.0'
+  readability-magic-numbers.IgnoredIntegerValues: '1;2;3;4;100'
+  cppcoreguidelines-special-member-functions.AllowMissingMoveFunctionsWhenCopyIsDeleted: true
+...

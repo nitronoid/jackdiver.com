@@ -1,0 +1,42 @@
+bazel_dep(name = "googletest", version = "1.18.0")
+bazel_dep(name = "aspect_rules_lint", version = "2.9.0")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
+bazel_dep(name = "buildifier_prebuilt", version = "8.5.1.4")
+bazel_dep(name = "rules_cc", version = "0.2.25")
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "llvm", version = "0.8.21")
+bazel_dep(name = "rules_python", version = "1.8.0")
+
+register_toolchains("@llvm//toolchain:all")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+_DART_SASS_BUILD = """\
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "dart",
+    srcs = ["src/dart"],
+)
+
+filegroup(
+    name = "snapshot",
+    srcs = ["src/sass.snapshot"],
+)
+"""
+
+http_archive(
+    name = "dart_sass_macos_arm64",
+    build_file_content = _DART_SASS_BUILD,
+    sha256 = "4453e66a326f350821622912d99115eefe6a636838a10a279e341254ef00594d",
+    strip_prefix = "dart-sass",
+    url = "https://github.com/sass/dart-sass/releases/download/1.105.1/dart-sass-1.105.1-macos-arm64.tar.gz",
+)
+
+http_archive(
+    name = "dart_sass_linux_x64",
+    build_file_content = _DART_SASS_BUILD,
+    sha256 = "9046fdd4a31a524a0020298c55d9e155d4c22363ef268e8992574335a72c6a6f",
+    strip_prefix = "dart-sass",
+    url = "https://github.com/sass/dart-sass/releases/download/1.105.1/dart-sass-1.105.1-linux-x64.tar.gz",
+)

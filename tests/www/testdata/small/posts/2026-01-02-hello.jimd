@@ -1,0 +1,5 @@
+[%title]: Hello
+
+A post with $x^2$ and a figure.
+
+[!A diagram](/image/d.svg)

@@ -1,0 +1,86 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+load("//tools/js:defs.bzl", "js_bytecode")
+
+js_bytecode(
+    name = "fixture",
+    testonly = True,
+    srcs = [
+        "testdata/first.js",
+        "testdata/second.js",
+    ],
+)
+
+js_bytecode(
+    name = "echo",
+    testonly = True,
+    srcs = [
+        "testdata/library.js",
+        "testdata/shim.js",
+    ],
+)
+
+js_bytecode(
+    name = "behaviours",
+    testonly = True,
+    srcs = ["testdata/behaviours.js"],
+)
+
+js_bytecode(
+    name = "no_render",
+    testonly = True,
+    srcs = ["testdata/no_render.js"],
+)
+
+js_bytecode(
+    name = "throws_on_load",
+    testonly = True,
+    srcs = ["testdata/throws_on_load.js"],
+)
+
+cc_test(
+    name = "engine_test",
+    size = "small",
+    srcs = ["engine_test.cxx"],
+    deps = [
+        ":behaviours",
+        ":echo",
+        ":no_render",
+        ":throws_on_load",
+        "//:js",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "utf8_offset_test",
+    size = "small",
+    srcs = ["utf8_offset_test.cxx"],
+    deps = [
+        "//:js",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "js_bytecode_test",
+    size = "small",
+    srcs = ["js_bytecode_test.cxx"],
+    deps = [
+        ":fixture",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "quickjs_test",
+    size = "small",
+    srcs = ["quickjs_test.cxx"],
+    deps = [
+        "//deps/thirdparty:quickjs",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)

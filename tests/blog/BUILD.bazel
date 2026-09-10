@@ -1,0 +1,195 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+
+cc_library(
+    name = "corpus",
+    testonly = True,
+    hdrs = ["corpus.hxx"],
+    include_prefix = "blog_test",
+    strip_include_prefix = "/tests/blog",
+    deps = [
+        "//:blog_lib",
+        "//:jimd",
+        "@googletest//:gtest",
+    ],
+)
+
+cc_test(
+    name = "post_test",
+    size = "small",
+    srcs = ["post_test.cxx"],
+    deps = [
+        "//:blog_lib",
+        "//:jimd",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "site_test",
+    size = "small",
+    srcs = ["site_test.cxx"],
+    deps = [
+        ":corpus",
+        "//:blog_lib",
+        "//:jimd",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "frame_test",
+    size = "small",
+    srcs = ["frame_test.cxx"],
+    deps = [
+        ":corpus",
+        "//:blog_lib",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "build_test",
+    size = "small",
+    srcs = ["build_test.cxx"],
+    deps = [
+        "//:blog_lib",
+        "//:highlight",
+        "//:jimd",
+        "//:math",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "args_test",
+    size = "small",
+    srcs = ["args_test.cxx"],
+    deps = [
+        "//:blog_lib",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "golden_tree",
+    testonly = True,
+    srcs = ["golden_tree.cxx"],
+    hdrs = ["golden_tree.hxx"],
+    include_prefix = "blog_golden",
+    strip_include_prefix = "/tests/blog",
+    deps = [
+        "//:blog_lib",
+        "//:highlight",
+        "//:math",
+        "//tests/golden",
+    ],
+)
+
+cc_test(
+    name = "golden_tree_test",
+    size = "small",
+    srcs = ["golden_tree_test.cxx"],
+    deps = [
+        ":golden_tree",
+        "//:blog_lib",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "golden_test",
+    size = "small",
+    srcs = ["golden_test.cxx"],
+    data = glob(
+        [
+            "fixture/**",
+            "expected/**",
+        ],
+        allow_empty = True,
+    ),
+    deps = [
+        ":golden_tree",
+        "//:blog_lib",
+        "//:highlight",
+        "//:math",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_binary(
+    name = "update",
+    testonly = True,
+    srcs = ["update.cxx"],
+    deps = [
+        ":golden_tree",
+        "//:blog_lib",
+        "//:highlight",
+        "//:math",
+        "//tests/golden",
+    ],
+)
+
+cc_test(
+    name = "error_test",
+    size = "small",
+    srcs = ["error_test.cxx"],
+    deps = [
+        "//:blog_lib",
+        "//:jimd",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "render_test",
+    size = "small",
+    srcs = ["render_test.cxx"],
+    data = glob(["testdata/*.svg"]),
+    deps = [
+        "//:blog_lib",
+        "//:highlight",
+        "//:jimd",
+        "//:math",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "file_test",
+    size = "small",
+    srcs = ["file_test.cxx"],
+    data = glob(["testdata/*.svg"]),
+    deps = [
+        "//:blog_lib",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "image_test",
+    size = "small",
+    srcs = ["image_test.cxx"],
+    data = glob(["testdata/*.svg"]),
+    deps = [
+        "//:blog_lib",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)

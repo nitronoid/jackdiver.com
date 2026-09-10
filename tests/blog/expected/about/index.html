@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About – Jack Diver</title>
+  <meta name="description" content="What this site is.">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.style.colorScheme = t;
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/style/main.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+        href="/font/source-serif-4-roman.woff2">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/theme.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <a class="site-title" href="/">Jack Diver</a>
+  <nav class="site-nav">
+    <a href="/archive/">archive</a>
+    <a href="/about/">About</a>
+    <button type="button" class="theme-toggle" data-theme-toggle hidden>
+      <span class="theme-toggle-label" aria-hidden="true"></span>
+    </button>
+  </nav>
+</header>
+<main>
+  <article class="page">
+    <h1>About</h1>
+<p>A small site, built by <code>blog</code>.</p>
+  </article>
+</main>
+</body>
+</html>

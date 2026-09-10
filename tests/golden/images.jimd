@@ -1,0 +1,9 @@
+# Images
+
+An image: [!plain](plain.png). With a width: [!inline](inline.png 75%). The same alt text on another image: [!inline](other.png). An empty one: [!](none.png).
+
+A defined image with a width: [!defined].
+
+[!defined]: path to/defined.png  50%
+
+Not widths: [!a](a.png 7.5%), [!b](b.png 75 %) and [!c](75%).

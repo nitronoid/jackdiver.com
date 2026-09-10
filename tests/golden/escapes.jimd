@@ -1,0 +1,3 @@
+Escapes: 2 \* 3 \* 4, snake\_case, \`ticks\`, a \[bracket], \# not a heading, a backslash \\, \) a paren and \$5, a dollar sign.
+
+_emphasis with \_ inside_ and *strong with \* inside*, while `code keeps \ as it is`.

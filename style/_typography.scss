@@ -1,0 +1,211 @@
+@use 'tokens' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote, pre, figure, table, hr) {
+  margin: 0;
+}
+
+:where(img, svg, video, canvas, iframe) {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+
+  font-optical-sizing: auto;
+}
+
+body {
+  --measure: #{$measure};
+  --page: calc(var(--measure) + 2 * var(--pad));
+
+  margin: 0;
+  background: $c-page;
+  color: $c-text;
+
+  font-family: $serif;
+  font-size: var(--type-body);
+  line-height: r(1);
+  font-weight: 400;
+
+  font-variant-numeric: proportional-nums;
+}
+
+@include wide {
+  body {
+    --page: calc(var(--measure) + var(--rail) + var(--note) + 2 * var(--pad));
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $serif;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--type-h1);
+  line-height: r(1.5);
+  letter-spacing: -0.02em;
+  margin-block-end: r(0.5);
+}
+
+h2 {
+  font-size: var(--type-h2);
+  line-height: r(1.25);
+  margin-block: r(1) r(0.25);
+}
+
+h3 {
+  font-size: var(--type-h3);
+  line-height: r(1);
+  margin-block: r(0.75) r(0.25);
+}
+
+h4,
+h5,
+h6 {
+  font-size: var(--type-body);
+  line-height: r(1);
+  font-weight: 650;
+  margin-block: r(0.75) 0;
+}
+
+p,
+ul,
+ol,
+dl {
+  margin-block-end: r(1);
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  padding-inline-start: 1.4em;
+}
+
+li::marker {
+  color: $c-text-faint;
+}
+
+ol li::marker {
+  font-family: $sans;
+  font-size: 0.85em;
+  font-variant-numeric: tabular-nums;
+}
+
+li + li {
+  margin-block-start: r(0.25);
+}
+
+li > :last-child {
+  margin-block-end: 0;
+}
+
+li > ul,
+li > ol {
+  margin-block: r(0.25) 0;
+}
+
+hr {
+  border: 0;
+  inline-size: 5rem;
+  block-size: 1px;
+  margin: r(0.5) auto r(1.5);
+  background: $c-rule-strong;
+}
+
+strong,
+b {
+  font-weight: 650;
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+del {
+  text-decoration-line: line-through;
+  text-decoration-color: $c-link-hot;
+  color: $c-text-dim;
+}
+
+small {
+  font-size: 0.875em;
+}
+
+sup,
+sub {
+  font-size: 0.72em;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  inset-block-start: -0.45em;
+}
+
+sub {
+  inset-block-start: 0.22em;
+}
+
+a {
+  color: $c-link;
+  text-decoration-line: underline;
+  text-decoration-color: $c-link-line;
+  text-decoration-thickness: max(1px, 0.055em);
+  text-underline-offset: 0.16em;
+  transition: color var(--ease), text-decoration-color var(--ease);
+
+  &:hover {
+    color: $c-link-hot;
+    text-decoration-color: currentColor;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid $c-link-hot;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+:is(h1, h2, h3, h4, h5, h6) > a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: color-mix(in oklab, #{$c-link} 22%, transparent);
+}
+
+[data-grid] main {
+  background-image:
+    repeating-linear-gradient(to bottom, $c-link-hot 0 1px, transparent 1px r(1)),
+    repeating-linear-gradient(to bottom, $c-rule-strong 0 1px, transparent 1px r(0.25));
+  background-position: 0 0;
+}

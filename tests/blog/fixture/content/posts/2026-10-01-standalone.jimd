@@ -1,0 +1,13 @@
+[%title]: A post on its own
+
+A boiler is a first-order system[^first], with a time constant $\tau$.
+
+[!A diagram](/image/diagram.svg 75%)
+
+Its gain, in C++:
+
+```cpp
+auto gain(double k, double u) -> double { return k * u; } // k < 1
+```
+
+[^first]: Its step response is $1 - e^{-t/\tau}$.

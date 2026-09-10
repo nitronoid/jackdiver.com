@@ -1,0 +1,22 @@
+# Code fences
+
+A fence with a tag, then one without:
+
+```c
+int main(void) { return 0; }
+```
+
+```
+# not a heading, _not emphasis_
+```
+
+An empty one:
+
+```text
+```
+
+And one closed by the end of the file:
+
+```sh
+echo done
+```

@@ -1,0 +1,25 @@
+# Lists
+
+A paragraph line, and a list that starts right after it:
+- one
+- _two_ and *three*
+- four with a note[^n] and `code`
+
+[^n]: The note.
+
+Another list after a blank line:
+
+- first
+- second
+
+>
+- in a quote
+- also in a quote
+<
+
+Text that is not a list:
+-5 degrees, a lone
+-
+and a dash - in the middle.
+
+\- an escaped dash, so a paragraph.

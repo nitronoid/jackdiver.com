@@ -1,0 +1,16 @@
+[%title]: Inline maths
+
+A speed of $v = d / t$ in a line, then _emphasis around $x^2$ maths_ and a `$` in code.
+
+## Energy $E = mc^2$
+
+- an item with $\tau$ in it
+- a price of \$5 and a rate of $\frac{1}{X}\tau$
+
+A note with maths[^n], and an inline one[^b](see $\sqrt{2}$).
+
+>
+A quote with $a + b$ in it.
+<
+
+[^n]: The note's $\alpha$.

@@ -1,0 +1,14 @@
+[%title]: First part: what's a "system"?
+[%series]: demo
+[%description]: The first of two parts, with a note and some maths.
+
+## The idea
+
+A system maps an input $u$ to an output $y$, and it is linear if $y(au) = a\,y(u)$.[^scaling]
+
+[^scaling]: Scaling the input scales the output, which is the first of two rules.
+
+Two rules:
+
+- Scaling
+- Additivity

@@ -1,0 +1,12 @@
+load("//tools/js:defs.bzl", "js_bytecode")
+
+package(default_visibility = ["//visibility:public"])
+
+# highlight.js is vendored as it came. hljs_shim.js is ours: the render() that js::engine calls.
+js_bytecode(
+    name = "hljs_bytecode",
+    srcs = [
+        "highlight.js",
+        "hljs_shim.js",
+    ],
+)

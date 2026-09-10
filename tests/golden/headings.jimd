@@ -1,0 +1,19 @@
+# A heading with *bold*, _emphasis_ and `code`
+
+## Escapes: C\# and snake\_case
+
+### See [@site](https://example.com/) and [!pic](pic.png)
+
+#### A note[^n]
+
+[^n]: The note.
+
+# A heading with *bold*, _emphasis_ and `code`
+
+##### _Emphasis with a [@link](https://example.com/)_
+
+###### Again[^n]
+
+## Let's keep it simple
+
+### It’s the curly one

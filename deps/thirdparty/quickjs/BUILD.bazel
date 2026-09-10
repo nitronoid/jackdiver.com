@@ -1,0 +1,61 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "quickjs",
+    srcs = ["quickjs-amalgam.c"],
+    hdrs = ["quickjs.h"],
+    # Always optimised, even in the asan config: unoptimised under ASan, QuickJS's frames are big
+    # enough that Temml overflows any reasonable stack limit.
+    copts = ["-O2"],
+    includes = ["."],
+    # <pthread.h> and libm on Linux; macOS needs nothing.
+    linkopts = select({
+        "@platforms//os:linux": [
+            "-pthread",
+            "-lm",
+        ],
+        "//conditions:default": [],
+    }),
+    # Third-party C that clang-tidy has no business in.
+    tags = ["no-lint"],
+)
+
+# The amalgam with quickjs-libc, which qjsc needs (js_load_file, js_std_dump_error). Only qjsc links
+# it: nothing in :quickjs or in what links that gets QJS_BUILD_LIBC.
+cc_library(
+    name = "quickjs_libc",
+    srcs = ["quickjs-amalgam.c"],
+    hdrs = [
+        "quickjs.h",
+        "quickjs-libc.h",
+    ],
+    copts = ["-O2"],
+    includes = ["."],
+    # <dlfcn.h> as well, for loading native modules, which glibc before 2.34 keeps in libdl.
+    linkopts = select({
+        "@platforms//os:linux": [
+            "-ldl",
+            "-pthread",
+            "-lm",
+        ],
+        "//conditions:default": [],
+    }),
+    local_defines = ["QJS_BUILD_LIBC"],
+    tags = ["no-lint"],
+    visibility = ["//visibility:private"],
+)
+
+# QuickJS's compiler, a build tool for js_bytecode (//tools/js). Always optimised for the same
+# reason as :quickjs: the compile recurses as deep as the parser does.
+cc_binary(
+    name = "qjsc",
+    srcs = [
+        "cutils.h",
+        "qjsc.c",
+    ],
+    copts = ["-O2"],
+    tags = ["no-lint"],
+    deps = [":quickjs_libc"],
+)

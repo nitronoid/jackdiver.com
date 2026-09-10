@@ -1,0 +1,19 @@
+# Basic page
+
+A paragraph with `code`, _emphasis_ and *strong* text, a [@link](https://example.com/a?b=1&c=2)
+and an image: [!pic](pic.png).
+
+>
+A quote
+with two lines
+<
+
+```
+int main(void) { return 0; }
+```
+
+## Second heading
+
+A note[^one] and a repeat[^one].
+
+[^one]: The note, with <angle> brackets.

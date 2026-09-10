@@ -1,0 +1,30 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+load("//tools/www:defs.bzl", "blog_site")
+
+blog_site(
+    name = "empty_site",
+    testonly = True,
+    content = "//tests/www/testdata/empty:content",
+    css = "testdata/main.css",
+)
+
+blog_site(
+    name = "small_site",
+    testonly = True,
+    content = "//tests/www/testdata/small:content",
+    css = "testdata/main.css",
+)
+
+cc_test(
+    name = "www_test",
+    size = "small",
+    srcs = ["www_test.cxx"],
+    data = [
+        ":empty_site",
+        ":small_site",
+    ],
+    deps = [
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)

@@ -1,0 +1,8 @@
+@use "base" as *;
+
+@forward "base";
+
+@mixin boxed($padding: $gap) {
+  border: 1px solid $accent;
+  padding: $padding;
+}

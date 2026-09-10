@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jack Diver</title>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.style.colorScheme = t;
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/style/main.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+        href="/font/source-serif-4-roman.woff2">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/theme.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <a class="site-title" href="/">Jack Diver</a>
+  <nav class="site-nav">
+    <a href="/archive/">archive</a>
+    <a href="/about/">About</a>
+    <button type="button" class="theme-toggle" data-theme-toggle hidden>
+      <span class="theme-toggle-label" aria-hidden="true"></span>
+    </button>
+  </nav>
+</header>
+<main>
+  <article class="post">
+    <h1>A post on its own</h1>
+    <nav class="post-meta">
+      <span class="date">1 October 2026</span>
+    </nav>
+<p>A boiler is a first-order system<sup class="note-ref" style="anchor-name: --note-1"><a href="#note-1" id="noteref-1">1</a></sup>, with a time constant <math><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>.</p>
+<aside id="note-1" data-note="1" style="position-anchor: --note-1">
+<p>Its step response is <math><semantics><mrow><mn>1</mn><mo>−</mo><msup><mi>e</mi><mrow class="tml-sml-pad"><mo form="prefix" stretchy="false" lspace="0em" rspace="0em">−</mo><mi>t</mi><mi>/</mi><mi>τ</mi></mrow></msup></mrow><annotation encoding="application/x-tex">1 - e^{-t/\tau}</annotation></semantics></math>.</p>
+</aside>
+<div class="ink-mask" role="img" aria-label="A diagram" style="--src: url('/image/diagram.svg'); --ratio: 300/200; --width: 75%"></div>
+<p>Its gain, in C++:</p>
+<pre class="highlight"><code class="language-cpp"><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">gain</span><span class="hljs-params">(<span class="hljs-type">double</span> k, <span class="hljs-type">double</span> u)</span> -&gt; <span class="hljs-type">double</span> </span>{ <span class="hljs-keyword">return</span> k * u; } <span class="hljs-comment">// k &lt; 1</span>
+</code></pre>
+  </article>
+  <p class="more"><a href="/archive/">All 4 posts…</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,62 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "ast_test",
+    size = "small",
+    srcs = ["ast_test.cxx"],
+    deps = [
+        "//:jimd",
+        "//tests/support:ast_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "parse_test",
+    size = "small",
+    srcs = ["parse_test.cxx"],
+    deps = [
+        "//:jimd",
+        "//tests/support:ast_printers",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "result_test",
+    size = "small",
+    srcs = ["result_test.cxx"],
+    deps = [
+        "//:jimd",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "position_test",
+    size = "small",
+    srcs = ["position_test.cxx"],
+    deps = [
+        "//:jimd",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "html_test",
+    size = "small",
+    srcs = ["html_test.cxx"],
+    deps = [
+        "//:jimd",
+        "//tests/support:result_printers",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)

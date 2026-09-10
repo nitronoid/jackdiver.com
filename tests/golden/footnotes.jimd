@@ -1,0 +1,4 @@
+A claim[^one] and another[^two].
+
+[^one]: A note with *bold*, _emphasis_, `code` and a [@link](https://example.com/).
+[^two]: A note with an escaped \* star and an image [!pic](pic.png).

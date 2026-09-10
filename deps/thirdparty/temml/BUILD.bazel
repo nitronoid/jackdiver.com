@@ -1,0 +1,12 @@
+load("//tools/js:defs.bzl", "js_bytecode")
+
+package(default_visibility = ["//visibility:public"])
+
+# temml.js is vendored as it came. temml_shim.js is ours: the render() that js::engine calls.
+js_bytecode(
+    name = "temml_bytecode",
+    srcs = [
+        "temml.js",
+        "temml_shim.js",
+    ],
+)

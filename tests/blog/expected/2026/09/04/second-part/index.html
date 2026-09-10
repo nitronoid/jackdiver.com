@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Second part – Jack Diver</title>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.style.colorScheme = t;
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/style/main.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+        href="/font/source-serif-4-roman.woff2">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/theme.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <a class="site-title" href="/">Jack Diver</a>
+  <nav class="site-nav">
+    <a href="/archive/">archive</a>
+    <a href="/about/">About</a>
+    <button type="button" class="theme-toggle" data-theme-toggle hidden>
+      <span class="theme-toggle-label" aria-hidden="true"></span>
+    </button>
+  </nav>
+</header>
+<main>
+  <article class="post">
+    <h1>Second part</h1>
+    <nav class="post-meta">
+      <span class="date">4 September 2026</span>
+    </nav>
+    <nav class="series-nav" aria-label="Series navigation">
+      <p class="series-label">Part 2 of 2 in a series</p>
+      <ol class="series-parts">
+        <li><a href="/2026/09/03/first-part/">First part: what’s a “system”?</a></li>
+        <li class="current" aria-current="true">Second part</li>
+      </ol>
+    </nav>
+<p>Together they give superposition:</p>
+<math display="block" class="tml-display" style="display:block math;"><semantics><mrow><mi>y</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>u</mi><mn>1</mn></msub><mo>+</mo><msub><mi>u</mi><mn>2</mn></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>=</mo><mi>y</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>u</mi><mn>1</mn></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>+</mo><mi>y</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>u</mi><mn>2</mn></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">y(u_1 + u_2) = y(u_1) + y(u_2)
+</annotation></semantics></math>
+<p>An aligned derivation:</p>
+<math display="block" class="tml-display" style="display:block math;"><semantics><mtable displaystyle="true" class="tml-jot"><mtr><mtd class="tml-right" style="padding-left:0em;padding-right:0em;"><mi>a</mi></mtd><mtd class="tml-left" style="padding-left:0em;padding-right:0em;"><mrow><mo>=</mo><mi>b</mi><mo>+</mo><mi>c</mi></mrow></mtd></mtr><mtr><mtd class="tml-right" style="padding-left:0em;padding-right:0em;"><mrow></mrow></mtd><mtd class="tml-left" style="padding-left:0em;padding-right:0em;"><mrow></mrow></mtd></mtr><mtr><mtd class="tml-right" style="padding-left:0em;padding-right:0em;"><mi>d</mi></mtd><mtd class="tml-left" style="padding-left:0em;padding-right:0em;"><mrow><mo>=</mo><mi>e</mi></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align*}
+a &amp;= b + c
+\\
+&amp;
+\\
+d &amp;= e
+\end{align*}</annotation></semantics></math>
+<p>A block with a blank row and no alignment:</p>
+<math display="block" class="tml-display" style="display:block math;"><semantics><mtable displaystyle="true" class="tml-jot"><mtr><mtd class="tml-right" style="padding-left:0em;padding-right:0em;"><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow></mtd></mtr><mtr><mtd class="tml-right" style="padding-left:0em;padding-right:0em;"><mrow></mrow></mtd></mtr><mtr><mtd class="tml-right" style="padding-left:0em;padding-right:0em;"><mrow><mi>y</mi><mo>=</mo><mn>2</mn></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align*}
+x = 1
+\\
+
+\\
+y = 2
+\end{align*}</annotation></semantics></math>
+    <nav class="series-footer" aria-label="Series parts">
+      <a class="previous" href="/2026/09/03/first-part/">
+        <span class="direction">← Previous part</span>
+        <span class="title">First part: what’s a “system”?</span>
+      </a>
+    </nav>
+    <nav class="post-nav" aria-label="Adjacent posts">
+      <a class="older" href="/2026/09/03/first-part/">
+        <span class="direction">← Older</span>
+        <span class="title">First part: what’s a “system”?</span>
+      </a>
+      <a class="newer" href="/2026/10/01/standalone/">
+        <span class="direction">Newer →</span>
+        <span class="title">A post on its own</span>
+      </a>
+    </nav>
+  </article>
+</main>
+</body>
+</html>

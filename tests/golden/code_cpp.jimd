@@ -1,0 +1,26 @@
+# Highlighted code
+
+C++ with a keyword, a string, a comment and a number, and a `<`, a `>` and an `&` to escape:
+
+```cpp
+#include <vector>
+
+// Count the items that are small.
+auto small(std::vector<int> const& items) -> int {
+	int count = 0;
+	for (auto const item : items) {
+		if (item < 10 && item > 0) {
+			++count;
+		}
+	}
+	return count;
+}
+
+auto name = "a & b";
+```
+
+An alias gives the same spans, and the class is still the word that was written:
+
+```c++
+int x = 1;
+```

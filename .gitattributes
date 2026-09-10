@@ -1,0 +1,8 @@
+deps/** rules-lint-ignored=true
+# -text: Git does not convert line endings, so a golden case that needs CRLF keeps it.
+tests/golden/*.jimd -text
+tests/golden/*.html -text
+content/static/** -text
+content/static/font/*.woff2 binary
+tests/blog/fixture/** -text
+tests/blog/expected/** -text

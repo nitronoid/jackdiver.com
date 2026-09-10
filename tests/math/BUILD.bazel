@@ -1,0 +1,12 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+
+cc_test(
+    name = "temml_test",
+    size = "small",
+    srcs = ["temml_test.cxx"],
+    deps = [
+        "//:math",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)

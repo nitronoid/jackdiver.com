@@ -1,0 +1,20 @@
+<h1 id="highlighted-code"><a href="#highlighted-code">Highlighted code</a></h1>
+<p>C++ with a keyword, a string, a comment and a number, and a <code>&lt;</code>, a <code>&gt;</code> and an <code>&amp;</code> to escape:</p>
+<pre class="highlight"><code class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-comment">// Count the items that are small.</span>
+<span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">small</span><span class="hljs-params">(std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-type">const</span>&amp; items)</span> -&gt; <span class="hljs-type">int</span> </span>{
+	<span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> <span class="hljs-type">const</span> item : items) {
+		<span class="hljs-keyword">if</span> (item &lt; <span class="hljs-number">10</span> &amp;&amp; item &gt; <span class="hljs-number">0</span>) {
+			++count;
+		}
+	}
+	<span class="hljs-keyword">return</span> count;
+}
+
+<span class="hljs-keyword">auto</span> name = <span class="hljs-string">&quot;a &amp; b&quot;</span>;
+</code></pre>
+<p>An alias gives the same spans, and the class is still the word that was written:</p>
+<pre class="highlight"><code class="language-c++"><span class="hljs-type">int</span> x = <span class="hljs-number">1</span>;
+</code></pre>

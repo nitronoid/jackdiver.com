@@ -1,0 +1,9 @@
+load("//tools/sass:defs.bzl", "sass_css")
+
+package(default_visibility = ["//:__subpackages__"])
+
+sass_css(
+    name = "main_css",
+    src = "main.scss",
+    srcs = glob(["_*.scss"]),
+)

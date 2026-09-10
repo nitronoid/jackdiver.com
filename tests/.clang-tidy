@@ -1,0 +1,14 @@
+---
+InheritParentConfig: true
+Checks: >
+  -cppcoreguidelines-owning-memory
+CheckOptions:
+  bugprone-throwing-static-initialization.AllowedTypes: 'testing::TestInfo;^int$'
+  bugprone-unchecked-optional-access.IgnoreValueCalls: true
+  cppcoreguidelines-avoid-do-while.IgnoreMacros: true
+  cppcoreguidelines-avoid-non-const-global-variables.IgnoreMacros: true
+  modernize-type-traits.IgnoreMacros: true
+  modernize-use-trailing-return-type.TransformFunctions: false
+  readability-function-cognitive-complexity.IgnoreMacros: true
+  readability-identifier-length.IgnoredVariableNames: '^t$'
+...

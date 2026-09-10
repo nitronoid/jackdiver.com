@@ -1,0 +1,13 @@
+@use "part";
+
+.note {
+  @include part.boxed;
+
+  &:hover {
+    color: part.$accent;
+  }
+
+  p {
+    margin: part.$gap * 2;
+  }
+}

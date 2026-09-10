@@ -1,0 +1,1 @@
+An inline note[^a](with *bold*, `code (not closed)` and an escaped \) paren) and another with the same key[^a](a second note) and an empty one[^](a third).

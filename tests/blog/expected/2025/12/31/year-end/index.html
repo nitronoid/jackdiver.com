@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Year end – Jack Diver</title>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.style.colorScheme = t;
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/style/main.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+        href="/font/source-serif-4-roman.woff2">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="/theme.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <a class="site-title" href="/">Jack Diver</a>
+  <nav class="site-nav">
+    <a href="/archive/">archive</a>
+    <a href="/about/">About</a>
+    <button type="button" class="theme-toggle" data-theme-toggle hidden>
+      <span class="theme-toggle-label" aria-hidden="true"></span>
+    </button>
+  </nav>
+</header>
+<main>
+  <article class="post">
+    <h1>Year end</h1>
+    <nav class="post-meta">
+      <span class="date">31 December 2025</span>
+    </nav>
+<p>A post from the year before, for the archive.</p>
+    <nav class="post-nav" aria-label="Adjacent posts">
+      <a class="newer" href="/2026/09/03/first-part/">
+        <span class="direction">Newer →</span>
+        <span class="title">First part: what’s a “system”?</span>
+      </a>
+    </nav>
+  </article>
+</main>
+</body>
+</html>

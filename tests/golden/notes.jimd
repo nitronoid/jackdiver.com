@@ -1,0 +1,23 @@
+# Notes
+
+Two notes[^one] in one paragraph[^two], and the first again[^one].
+
+## A heading[^three]
+
+- An item[^four], and the second note again[^two].
+- A second item.
+
+>
+A quote[^five]
+
+>
+A nested quote[^six]
+<
+<
+
+[^one]: The first note.
+[^two]: The second note, with `code`.
+[^three]: A note after a heading.
+[^four]: A note after a list.
+[^five]: A note after a quote.
+[^six]: A note in a nested quote.

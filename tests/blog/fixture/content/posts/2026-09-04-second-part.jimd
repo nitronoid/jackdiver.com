@@ -1,0 +1,24 @@
+[%title]: Second part
+[%series]: demo
+
+Together they give superposition:
+
+$$
+y(u_1 + u_2) = y(u_1) + y(u_2)
+$$
+
+An aligned derivation:
+
+$$$
+a &= b + c
+&
+d &= e
+$$$
+
+A block with a blank row and no alignment:
+
+$$$
+x = 1
+
+y = 2
+$$$

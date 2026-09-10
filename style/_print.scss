@@ -1,0 +1,117 @@
+@use 'tokens' as *;
+
+@media print {
+  @page {
+    margin: 18mm 16mm;
+  }
+
+  :root {
+    color-scheme: only light;
+
+    --rhythm: 15pt;
+    --pad: 0;
+    --rail: 0;
+    --note: 0;
+
+    --type-body: 10.5pt;
+    --type-h1: 20pt;
+    --type-h2: 14pt;
+    --type-h3: 12pt;
+    --type-note: 9pt;
+    --type-micro: 8pt;
+    --type-code: 8.5pt;
+  }
+
+  body {
+    --page: 100%;
+    background: none;
+  }
+
+  .site-nav,
+  .post-nav,
+  .series-footer,
+  .more {
+    display: none;
+  }
+
+  [data-grid] main {
+    background-image: none;
+  }
+
+  .site-header,
+  .site-footer {
+    border-color: #999;
+  }
+
+  .site-footer {
+    padding-block-end: 0;
+  }
+
+  article {
+    margin-block: 12pt 0;
+  }
+
+  article a[href^='http']::after {
+    content: ' <' attr(href) '>';
+    font-family: $mono;
+    font-size: 0.8em;
+    word-break: break-all;
+    color: #555;
+  }
+
+  a {
+    text-decoration-color: #999;
+  }
+
+  pre,
+  .callout,
+  .series-nav {
+    background: none;
+    border: 1px solid #bbb;
+  }
+
+  code {
+    background: none;
+  }
+
+  pre {
+    overflow: visible;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  aside {
+    color: #333;
+    border-inline-start-color: #bbb;
+  }
+
+  blockquote {
+    border-inline-start-color: #999;
+    color: #333;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  figcaption {
+    break-after: avoid;
+  }
+
+  pre,
+  blockquote,
+  figure,
+  table,
+  aside,
+  .callout,
+  .series-nav,
+  math[display='block'] {
+    break-inside: avoid;
+  }
+
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+}

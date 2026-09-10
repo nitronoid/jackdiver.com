@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+if git diff --cached --quiet; then
+    exit 0
+fi
+
+PATCH="$(mktemp)"
+HAS_UNSTAGED=0
+
+cleanup() {
+    if [[ $HAS_UNSTAGED -eq 1 ]]; then
+        git checkout -- . 2>/dev/null || true
+        if [[ -s "$PATCH" ]]; then
+            if ! git apply --binary "$PATCH" 2>/dev/null; then
+                echo "WARNING: Failed to re-apply unstaged changes." >&2
+                echo "Your unstaged changes are preserved in: $PATCH" >&2
+                return
+            fi
+        fi
+    fi
+    rm -f "$PATCH"
+}
+trap cleanup EXIT INT TERM
+
+if ! git diff --quiet --ignore-submodules --; then
+    HAS_UNSTAGED=1
+    git diff --binary > "$PATCH"
+    git checkout -- .
+fi
+
+echo "==> Running buildifier check..."
+if ! bazel run //tools/format:buildifier.check; then
+    echo "ERROR: Buildifier check failed. Run 'bazel run //tools/format:buildifier' to fix formatting." >&2
+    exit 1
+fi
+
+echo "==> Running format check..."
+if ! bazel run //tools/format:clang-format.check; then
+    echo "ERROR: Formatting check failed. Run 'bazel run //tools/format:clang-format' to fix formatting." >&2
+    exit 1
+fi
+
+echo "==> Running linter..."
+if ! ./tools/lint/lint.sh; then
+    echo "ERROR: Lint check failed." >&2
+    exit 1
+fi

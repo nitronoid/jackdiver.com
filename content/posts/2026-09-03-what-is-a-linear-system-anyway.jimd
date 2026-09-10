@@ -1,0 +1,149 @@
+[%title]: What is a linear system anyway?
+[%series]: pi
+
+'Linear systems' get their name because they exhibit a _linear_ response to changes in input.
+_"What's a linear response?"_ I hear you ask, we can say that a system is linear if it obeys two rules:
+- Scaling: Doubling the input doubles the response
+- Additivity: The response to two inputs at once is just the sum of each individual one
+
+Together those two are called _superposition_. It sounds simple but these properties are what allow us to tackle such systems with elegant control solutions.
+The goal of this post is to explain the intuition behind one, and I'll be using a boiler to do so because it's a classic example.
+
+## The boiler
+
+[!boiler](/image/boiler.svg 75%)
+
+Imagine we’re trying to control the water temperature inside a boiler. We have control over the strength of a flame that can be used to heat up the water. How can we use the flame to achieve a target water temperature?
+
+Let’s see what can we state about the boiler:
+- The water loses heat to the environment.
+- The amount of heat it loses is proportional[^temperature-loss] to how hot it is at that moment vs the ambient temperature.
+- The water takes time to absorb heat from the flame.
+
+
+[^temperature-loss]: For the curious, temperature loss follows [@Newton's law of cooling](https://en.wikipedia.org/wiki/Newton%27s_law_of_cooling).
+
+## The easy way
+
+It follows that for any target temperature[^almost], there’s a given flame strength that will be able to hold that target by balancing the heat loss.
+Why not set the flame to that strength, and wait for the water to reach temp?
+We can put together an equation to solve for the required strength:
+
+$$
+\tau \frac{dT}{dt} = -\big(T(t) - T_{ambient}\big) + K\cdot f(t)
+$$
+
+[^almost]: Unless that target is below the ambient temperature. We can't _cool_ the water with our flame after all.
+
+Don't be intimidated! The equation represents several simple concepts:
+- $\tau$ _mystery tau[^mystery], ignore it for now ♪_
+- $f(t)$ is the flame strength at time $t$
+- $T(t)$ is the water temperature at time $t$
+- $T_{ambient}$ is the ambient temperature[^affine]
+- $K$ is the steady-state gain - basically this represents the ultimate amount of heat a given flame can add to the system. If $K=30°C/u$, it means that for each 'unit' of flame we could raise the temp by $30°C$.
+
+[^mystery]: No, you can't ask about it (yet)
+
+[^affine]: This being constant technically makes the system affine rather than linear.
+
+Solving where $dT/dt=0$ (the steady state) gives exactly the flame strength we were after:
+
+$$
+f_{steady} = \frac{T_{target} - T_{ambient}}{K}
+$$
+
+For example, let's say our boiler's cool water starts at $T_{ambient}=15°C$, but we want $T_{target}=45°C$, and for this particular boiler $K=30°C/u$. Then:
+
+$$
+f_{steady} = \frac{45-15}{30} = 1u
+$$
+
+So holding the flame at strength $1$ unit is what keeps the water sitting at 45°C once things settle down.
+
+If we set the flame to $f_{steady}$ and just wait, $T(t)$ climbs towards $T_{target}$ and eventually settles there:
+
+[!graph 1](/image/boiler_tau_graph_1.svg 75%)
+
+## _Mystery Tau, look at it we shall ♪_
+
+[!mystery-tau](/image/mystery-tau.svg 50%)
+
+Eagle eyed readers might have noticed that I labelled time in multiples of $\tau$, which I did because $\tau$ is the _time constant_. The time constant of a linear system is the fundamental time unit that dictates how quickly it responds.
+More specifically a time constant is the time it takes for the system to reach approximately $63.2\%$ of its climb to the steady-state value.
+
+_"Why 63.2%?"_ I hear you ask, it's because a linear system's approach to the target follows an exponential curve. As we heat up and approach the target, the heat loss also increases (because it's proportional to how far above ambient the water is), while the amount of heat we're adding remains fixed. All that means is our approach slows as we get closer and closer.
+The path it follows is exactly (with $T(0) = T_{ambient}$):
+$$
+T(t) = T(0) + (T_{target}-T(0)) \cdot \big(1 - e^{-t/\tau}\big)
+$$
+In other words, the _distance_ to the target closes at an _exponentially decaying_ rate, so we call this an _exponential approach_.
+
+
+## _Why is my shower still cold?!_
+
+Right so that’s a little slow… perhaps we could reach the target faster by starting with a stronger flame to heat the water up more quickly, and then smoothly transition to $f_{steady}$ as we approach the target?
+
+Let's try it... below you can see that the stronger start moves more heat in early, so the resulting temperature (left axis) reaches $T_{target}$ sooner. The flame driving it (right axis) starts high and tapers back down to $f_{steady}$ as we approach the target:
+
+[!graph 2](/image/boiler_tau_graph_2.svg 75%)
+
+Here I've used twice the starting flame strength initially, reducing it to $f_{steady}$ by the end.
+You can see that we're reaching that $63.2\%$ mark in half the time.
+
+
+## _Let's crank this flame up to eleven!_
+
+This leads to two natural questions: _"How strong should we set the initial flame?"_ and _"Over what time period should we transition between the two?"_ It turns out these two questions are very intertwined.
+
+[!flame](/image/flame.svg 50%)
+
+We know that $\tau$ is a kind of measure of the response rate of the system, but imagine we want the boiler to respond more quickly on some shorter time constant $\tau_{fast}$.
+Assuming our boiler has $\tau = 66s$, let's push it 11 times faster: $\tau_{fast} = \frac{\tau}{11} = 6s$.
+If we bring back the first equation, we can solve for the initial state where $T(0) = T_{ambient}$. Remember that we're closing a $30°C$ gap, and $K = 30°C/u$:
+$$$
+dT &= T_{target} - T(0),\qquad dt = \tau_{fast}
+\tau \cdot \frac{dT}{dt} &= -\big(T(t) - T_{ambient}\big) + K\cdot f(t)
+&
+66s \cdot \frac{30°C}{6s} &= 0 + 30°C/u\cdot f(0)
+\therefore f(0) &= 11u
+$$$
+An eleven times shorter time constant and eleven times the flame! [^remember-fsteady]
+
+And that's no coincidence, remember that: $T_{target} - T_{ambient} = K \cdot f_{steady}$. [^we-saw-this-before]
+It turns out we can do some rearranging to find that the starting flame strength is defined by a ratio of the two time constants:
+$$$
+f(0) &= \frac{dT}{dt} \cdot \frac{\tau}{K}
+&= \frac{T_{target} - T_{ambient}}{\tau_{fast}} \cdot \frac{\tau}{K}
+&= \frac{K \cdot f_{steady}}{\tau_{fast}} \cdot \frac{\tau}{K}
+&= f_{steady} \cdot \frac{\tau}{\tau_{fast}}
+$$$
+This is super cool! It means our rule generalizes to: _"Want to go $X$ times as fast? Then use $X$ times the flame, faded out with $\frac{1}{X}\tau$"_
+
+
+[^remember-fsteady]: Recall $f_{steady}=1u$
+[^we-saw-this-before]: We saw this before as $f_{steady} = \frac{T_{target} - T_{ambient}}{K}$
+
+
+## So where does that leave us?
+
+As we've learned, the time constant represents the _exponential approach_ to the target temperature, and we want our strong initial flame to fade out matching that approach, so it needs an _exponential decay_.[^intuition]
+Plugging that in we can write down the entire continuous flame function that describes every flame strength from now until the water settles:
+$$$
+f(t) &= f_{steady} + (f(0) - f_{steady}) \cdot e^{-t/\tau_{fast}}
+&= f_{steady} + f_{steady} \cdot \left(\frac{\tau}{\tau_{fast}} - 1\right) \cdot e^{-t/\tau_{fast}}
+$$$
+
+[^intuition]: If that didn't click for you then don't worry, we'll get into this more next time.
+
+
+Think about what we just did. Split the flame function[^think] down the middle:
+$$
+f(t) = \underbrace{f_{steady}}_{\text{holds the target}} + \underbrace{f_{steady} \cdot \left(\frac{\tau}{\tau_{fast}} - 1\right) \cdot e^{-t/\tau_{fast}}}_{\text{boost that fades away}}
+$$
+[^think]: What does this look like at $t = 0 \text{ or } t = \infty$? How about if $\tau = \tau_{fast}$?
+
+A steady part that holds the target forever, and an extra part that dies off once we've arrived (_that's scaling!_). Then just... add them together (_that's superposition!_).
+
+That's all there is to it. To solve a linear system[^first-order], we start by identifying the ideal steady state conditions, and then tune the _aggressiveness_ ($\tau_{fast}$) to accelerate the path there.
+
+[^first-order]: Technically this is only true for 'first-order' linear systems.
